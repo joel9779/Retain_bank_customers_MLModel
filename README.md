@@ -1,42 +1,55 @@
-# Bank Customer Churn Prediction
+# Retain_Bank_Customers
+Bank Customer Churn Prediction
 
-This project aims to predict customer churn for a bank using machine learning techniques. The focus is on handling class imbalance using multiple resampling strategies and optimizing model performance through hyperparameter tuning and threshold adjustment.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Project Structure](#project-structure)
-- [Data](#data)
-- [Installation and Dependencies](#installation-and-dependencies)
-- [Usage](#usage)
-- [Modeling Approach](#modeling-approach)
-  - [Data Preprocessing](#data-preprocessing)
-  - [Handling Class Imbalance](#handling-class-imbalance)
-  - [Model Training and Hyperparameter Tuning](#model-training-and-hyperparameter-tuning)
-  - [Final Evaluation and Threshold Tuning](#final-evaluation-and-threshold-tuning)
-- [Results](#results)
-- [Conclusion](#conclusion)
-- [License](#license)
+This project aims to predict customer churn using machine learning techniques, with a particular focus on addressing class imbalance. By exploring various resampling strategies and model tuning methods, the project demonstrates how to improve predictions for the minority class (customers who churn).
 
 ## Overview
 
-This project builds machine learning models (Logistic Regression and Random Forest) to predict whether a customer will churn (exit). Due to class imbalance in the dataset, multiple resampling techniques (oversampling and SMOTETomek) are employed to improve the detection of the minority class. The project also demonstrates hyperparameter tuning and probability threshold adjustment to optimize model performance.
+- **Objective:**  
+  Predict whether a customer will exit the bank using features such as credit score, age, balance, and more.
 
-## Project Structure
+- **Challenge:**  
+  The dataset exhibits class imbalance, with fewer examples of churned customers compared to non-churned ones.
 
+- **Approach:**  
+  Two main strategies were used to handle class imbalance:
+  1. **Oversampling:** Duplicating minority class samples.
+  2. **SMOTETomek:** Combining synthetic minority oversampling (SMOTE) with Tomek links to remove ambiguous samples.
+  
+  Hyperparameter tuning using GridSearchCV and threshold adjustment were performed to optimize model performance.
 
-## Data
+## Key Steps
 
-The dataset (`churn.csv`) contains 10,000 records with the following key features:
-- **Identifiers:** `RowNumber`, `CustomerId`, `Surname` (not used for modeling)
-- **Numerical Features:** `CreditScore`, `Age`, `Balance`, `EstimatedSalary`
-- **Categorical Features:** `Geography`, `Gender`
-- **Additional Features:** `Tenure` (with some missing values), `NumOfProducts`, `HasCrCard`, `IsActiveMember`
-- **Target Variable:** `Exited` (1 if the customer churned, 0 otherwise)
+1. **Data Preprocessing:**  
+   - Encoding categorical variables (e.g., Geography, Gender).
+   - Imputing missing values in the Tenure column using the median.
+   - Scaling features using StandardScaler.
 
-## Installation and Dependencies
+2. **Model Training:**  
+   - Two models were trained: Logistic Regression and Random Forest.
+   - Hyperparameter tuning was done using GridSearchCV with F1-score as the evaluation metric.
+  
+3. **Evaluation:**  
+   - Initial results with imbalanced data showed high overall accuracy but very poor recall for the minority class.
+   - Addressing class imbalance significantly improved the detection of churned customers, as measured by F1-score and AUC-ROC.
+   - Final adjustments, including threshold tuning (optimal threshold found at 0.44), further enhanced performance.
 
-Ensure you have Python 3.7 or later installed. Install the required packages using pip:
+## Results
 
-```bash
-pip install -r requirements.txt
+- **Initial Logistic Regression:**  
+  Overall accuracy ~80.45% but very low recall for churned customers.
+
+- **Random Forest (Oversampling):**  
+  Accuracy improved to ~84.8%, with an F1-score of 0.5789 and AUC-ROC of 0.7235.
+
+- **Random Forest (SMOTETomek and Threshold Tuning):**  
+  Further improvements with an F1-score of 0.5955 and AUC-ROC of 0.7346, indicating a balanced performance between precision and recall.
+
+## Conclusion
+
+By effectively handling class imbalance and fine-tuning model parameters and decision thresholds, the final Random Forest model provides a robust solution for predicting customer churn. This project demonstrates the importance of data preprocessing and the use of advanced resampling techniques in imbalanced classification tasks.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
